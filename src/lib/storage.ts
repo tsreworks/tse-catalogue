@@ -219,40 +219,66 @@ export class StorageService {
   // Redimensionner une image (côté client)
   static async resizeImage(
     file: File,
-    maxWidth: number = 1920,
-    maxHeight: number = 1080,
-    quality: number = 0.8
+    options: {
+      maxWidth?: number
+      maxHeight?: number
+      quality?: number
+      maintainAspectRatio?: boolean
+    } = {}
   ): Promise<File> {
+    const {
+      maxWidth = 1920,
+      maxHeight = 1080,
+      quality = 0.85,
+      maintainAspectRatio = true
+    } = options
+
+    // Si le fichier n'est pas une image, le retourner tel quel
+    if (!file.type.startsWith('image/')) {
+      return file
+    }
+
     return new Promise((resolve, reject) => {
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')
       const img = new Image()
 
       img.onload = () => {
-        // Calculer les nouvelles dimensions
         let { width, height } = img
-        
-        if (width > maxWidth) {
-          height = (height * maxWidth) / width
-          width = maxWidth
-        }
-        
-        if (height > maxHeight) {
-          width = (width * maxHeight) / height
-          height = maxHeight
+
+        // Vérifier si le redimensionnement est nécessaire
+        if (width <= maxWidth && height <= maxHeight) {
+          resolve(file) // Pas besoin de redimensionner
+          return
         }
 
-        // Redimensionner
+        // Calculer les nouvelles dimensions
+        if (maintainAspectRatio) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height)
+          width = Math.round(width * ratio)
+          height = Math.round(height * ratio)
+        } else {
+          width = Math.min(width, maxWidth)
+          height = Math.min(height, maxHeight)
+        }
+
         canvas.width = width
         canvas.height = height
-        ctx?.drawImage(img, 0, 0, width, height)
 
-        // Convertir en blob puis en file
+        // Améliorer la qualité du redimensionnement
+        if (ctx) {
+          ctx.imageSmoothingEnabled = true
+          ctx.imageSmoothingQuality = 'high'
+          ctx.drawImage(img, 0, 0, width, height)
+        }
+
+        // Convertir en blob avec le bon type MIME
+        const outputType = file.type === 'image/png' ? 'image/png' : 'image/jpeg'
         canvas.toBlob(
           (blob) => {
             if (blob) {
               const resizedFile = new File([blob], file.name, {
-                type: file.type,
+                type: outputType,
                 lastModified: Date.now()
               })
               resolve(resizedFile)
@@ -260,7 +286,7 @@ export class StorageService {
               reject(new Error('Erreur lors du redimensionnement'))
             }
           },
-          file.type,
+          outputType,
           quality
         )
       }

@@ -223,18 +223,12 @@ export default function VehicleDetailPage({ vehicle }: VehicleDetailPageProps) {
             {/* Galerie d'images */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Photos du véhicule</h3>
-              <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <svg width="80" height="60" viewBox="0 0 80 60" fill="none" className="text-gray-400 mx-auto mb-4">
-                    <path d="M20 30L24 26H56L60 30V40H56V38H24V40H20V30Z" fill="currentColor"/>
-                    <circle cx="28" cy="40" r="3" fill="currentColor"/>
-                    <circle cx="52" cy="40" r="3" fill="currentColor"/>
-                    <rect x="26" y="28" width="28" height="8" fill="currentColor" opacity="0.5"/>
-                  </svg>
-                  <p className="text-gray-500">Photos à venir</p>
-                  <p className="text-sm text-gray-400">Contactez-nous pour plus d&apos;images</p>
-                </div>
-              </div>
+              <VehicleImageGallery
+                vehicleId={vehicle.id}
+                showThumbnails={true}
+                showControls={true}
+                autoPlay={false}
+              />
             </div>
 
             {/* Onglets */}

@@ -1,0 +1,275 @@
+// Schéma Prisma pour TSE Catalogue - Migration depuis Supabase
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Modèle des marques
+model Brand {
+  id           String   @id @default(uuid()) @db.Char(36)
+  nom          String   @unique @db.VarChar(100)
+  description  String?  @db.Text
+  logo         String?  @db.VarChar(500)
+  siteWeb      String?  @map("site_web") @db.VarChar(255)
+  paysOrigine  String?  @map("pays_origine") @db.VarChar(100)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  models   Model[]
+  vehicles Vehicle[]
+
+  @@index([nom])
+  @@index([paysOrigine])
+  @@map("brands")
+}
+
+// Modèle des modèles de véhicules
+model Model {
+  id            String      @id @default(uuid()) @db.Char(36)
+  nom           String      @db.VarChar(100)
+  brandId       String      @map("brand_id") @db.Char(36)
+  description   String?     @db.Text
+  typeVehicule  VehicleType @default(Berline) @map("type_vehicule")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  // Relations
+  brand    Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  vehicles Vehicle[]
+
+  @@unique([brandId, nom], name: "unique_model_per_brand")
+  @@index([brandId])
+  @@index([typeVehicule])
+  @@map("models")
+}
+
+// Modèle des véhicules
+model Vehicle {
+  id           String           @id @default(uuid()) @db.Char(36)
+  brandId      String           @map("brand_id") @db.Char(36)
+  modelId      String           @map("model_id") @db.Char(36)
+  annee        Int              @db.Year
+  couleur      String           @db.VarChar(50)
+  prix         Decimal?         @db.Decimal(12, 2)
+  kilometrage  Int              @default(0)
+  carburant    FuelType
+  transmission TransmissionType
+  statut       VehicleStatus    @default(Disponible)
+  description  String?          @db.Text
+
+  // Spécifications techniques
+  puissance       String? @db.VarChar(20)
+  cylindree       String? @db.VarChar(20)
+  consommation    String? @db.VarChar(30)
+  emissionsCo2    String? @map("emissions_co2") @db.VarChar(20)
+  nombrePortes    Int?    @map("nombre_portes") @db.TinyInt
+  nombrePlaces    Int?    @map("nombre_places") @db.TinyInt
+  coffre          String? @db.VarChar(20)
+  
+  // Champs additionnels
+  puissanceCv     Int?    @map("puissance_cv")
+  consommationL100km Decimal? @map("consommation_l100km") @db.Decimal(4,2)
+  longueurMm      Int?    @map("longueur_mm")
+  largeurMm       Int?    @map("largeur_mm")
+  hauteurMm       Int?    @map("hauteur_mm")
+  poidsKg         Int?    @map("poids_kg")
+  equipements     String? @db.Text
+
+  // Métadonnées
+  slug      String?  @db.VarChar(255)
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  brand             Brand               @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  model             Model               @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  images            VehicleImage[]
+  documents         VehicleDocument[]
+  vehicleEquipments VehicleEquipment[]
+
+  @@index([brandId])
+  @@index([modelId])
+  @@index([annee])
+  @@index([prix])
+  @@index([carburant])
+  @@index([statut])
+  @@index([slug])
+  @@index([featured])
+  @@index([brandId, modelId, annee, statut], name: "idx_vehicles_search")
+  @@map("vehicles")
+}
+
+// Modèle des équipements
+model Equipment {
+  id          String            @id @default(uuid()) @db.Char(36)
+  nom         String            @unique @db.VarChar(100)
+  description String?           @db.Text
+  categorie   EquipmentCategory @default(Confort)
+  icone       String?           @db.VarChar(50)
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+
+  // Relations
+  vehicleEquipments VehicleEquipment[]
+
+  @@index([categorie])
+  @@index([nom])
+  @@map("equipments")
+}
+
+// Table de liaison véhicules-équipements
+model VehicleEquipment {
+  id          String   @id @default(uuid()) @db.Char(36)
+  vehicleId   String   @map("vehicle_id") @db.Char(36)
+  equipmentId String   @map("equipment_id") @db.Char(36)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  vehicle   Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  equipment Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
+  @@unique([vehicleId, equipmentId], name: "unique_vehicle_equipment")
+  @@index([vehicleId])
+  @@index([equipmentId])
+  @@map("vehicle_equipments")
+}
+
+// Modèle des images de véhicules
+model VehicleImage {
+  id            String   @id @default(uuid()) @db.Char(36)
+  vehicleId     String   @map("vehicle_id") @db.Char(36)
+  url           String   @db.VarChar(500)
+  altText       String?  @map("alt_text") @db.VarChar(255)
+  estPrincipale Boolean  @default(false) @map("est_principale")
+  ordre         Int      @default(0)
+  tailleFichier Int?     @map("taille_fichier")
+  largeur       Int?
+  hauteur       Int?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId])
+  @@index([estPrincipale])
+  @@index([ordre])
+  @@map("vehicle_images")
+}
+
+// Modèle des documents de véhicules
+model VehicleDocument {
+  id            String       @id @default(uuid()) @db.Char(36)
+  vehicleId     String       @map("vehicle_id") @db.Char(36)
+  nom           String       @db.VarChar(255)
+  url           String       @db.VarChar(500)
+  typeDocument  DocumentType @default(Autre) @map("type_document")
+  tailleFichier Int?         @map("taille_fichier")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+
+  // Relations
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId])
+  @@index([typeDocument])
+  @@map("vehicle_documents")
+}
+
+// Modèle des utilisateurs administrateurs
+model AdminUser {
+  id                 String        @id @default(uuid()) @db.Char(36)
+  email              String        @unique @db.VarChar(255)
+  passwordHash       String        @map("password_hash") @db.VarChar(255)
+  nom                String?       @db.VarChar(100)
+  prenom             String?       @db.VarChar(100)
+  role               AdminRole     @default(admin)
+  actif              Boolean       @default(true)
+  derniereConnexion  DateTime?     @map("derniere_connexion")
+  createdAt          DateTime      @default(now()) @map("created_at")
+  updatedAt          DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  sessions UserSession[]
+
+  @@index([email])
+  @@index([role])
+  @@index([actif])
+  @@map("admin_users")
+}
+
+// Modèle des sessions utilisateur
+model UserSession {
+  id        String   @id @default(uuid()) @db.Char(36)
+  userId    String   @map("user_id") @db.Char(36)
+  tokenHash String   @map("token_hash") @db.VarChar(255)
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tokenHash])
+  @@index([expiresAt])
+  @@map("user_sessions")
+}
+
+// Enums basés sur l'analyse du projet existant
+enum VehicleType {
+  Berline
+  SUV
+  Coupe @map("Coupé")
+  Break
+  Cabriolet
+  Monospace
+  PickUp @map("Pick-up")
+  Utilitaire
+}
+
+enum FuelType {
+  Essence
+  Diesel
+  Hybride
+  Electrique @map("Électrique")
+}
+
+enum TransmissionType {
+  Manuelle
+  Automatique
+}
+
+enum VehicleStatus {
+  Disponible
+  Vendu
+  Reserve @map("Réservé")
+  EnMaintenance @map("En maintenance")
+  AVenir @map("À venir")
+}
+
+enum EquipmentCategory {
+  Securite @map("Sécurité")
+  Confort
+  Technologie
+  Esthetique @map("Esthétique")
+  Performance
+}
+
+enum DocumentType {
+  FicheTechnique @map("Fiche technique")
+  Manuel
+  Certificat
+  Rapport
+  Autre
+}
+
+enum AdminRole {
+  admin
+  super_admin
+}
