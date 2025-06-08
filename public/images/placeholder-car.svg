@@ -1,0 +1,8 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f3f4f6"/>
+  <path d="M100 150L120 130H280L300 150V200H280V190H120V200H100V150Z" fill="#9ca3af"/>
+  <circle cx="140" cy="200" r="15" fill="#6b7280"/>
+  <circle cx="260" cy="200" r="15" fill="#6b7280"/>
+  <rect x="130" y="140" width="140" height="40" fill="#d1d5db"/>
+  <text x="200" y="250" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="14">Image véhicule</text>
+</svg>

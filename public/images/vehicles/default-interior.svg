@@ -1,0 +1,53 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#f8fafc"/>
+  
+  <!-- Intérieur de voiture -->
+  <g transform="translate(100, 100)">
+    <!-- Tableau de bord -->
+    <path d="M 50 200 L 550 200 L 550 250 L 50 250 Z" fill="#374151" stroke="#1f2937" stroke-width="2"/>
+    
+    <!-- Écran central -->
+    <rect x="280" y="210" width="80" height="30" fill="#000000" stroke="#4b5563" stroke-width="2"/>
+    <rect x="285" y="215" width="70" height="20" fill="#1e40af"/>
+    
+    <!-- Volant -->
+    <circle cx="150" cy="225" r="40" fill="#374151" stroke="#1f2937" stroke-width="3"/>
+    <circle cx="150" cy="225" r="25" fill="#4b5563"/>
+    <circle cx="150" cy="225" r="8" fill="#6b7280"/>
+    
+    <!-- Sièges avant -->
+    <rect x="100" y="280" width="60" height="80" fill="#6b7280" stroke="#4b5563" stroke-width="2" rx="10"/>
+    <rect x="105" y="285" width="50" height="30" fill="#9ca3af" rx="5"/>
+    
+    <rect x="400" y="280" width="60" height="80" fill="#6b7280" stroke="#4b5563" stroke-width="2" rx="10"/>
+    <rect x="405" y="285" width="50" height="30" fill="#9ca3af" rx="5"/>
+    
+    <!-- Sièges arrière -->
+    <rect x="100" y="380" width="360" height="60" fill="#6b7280" stroke="#4b5563" stroke-width="2" rx="10"/>
+    <rect x="105" y="385" width="350" height="25" fill="#9ca3af" rx="5"/>
+    
+    <!-- Compteurs -->
+    <circle cx="120" cy="180" r="20" fill="#1f2937" stroke="#374151" stroke-width="2"/>
+    <circle cx="180" cy="180" r="20" fill="#1f2937" stroke="#374151" stroke-width="2"/>
+    
+    <!-- Aérateurs -->
+    <rect x="200" y="215" width="15" height="20" fill="#4b5563" rx="3"/>
+    <rect x="220" y="215" width="15" height="20" fill="#4b5563" rx="3"/>
+    <rect x="380" y="215" width="15" height="20" fill="#4b5563" rx="3"/>
+    <rect x="400" y="215" width="15" height="20" fill="#4b5563" rx="3"/>
+    
+    <!-- Console centrale -->
+    <rect x="250" y="280" width="100" height="120" fill="#374151" stroke="#1f2937" stroke-width="2" rx="5"/>
+    <rect x="260" y="290" width="80" height="20" fill="#4b5563" rx="3"/>
+    <rect x="260" y="320" width="35" height="15" fill="#4b5563" rx="2"/>
+    <rect x="305" y="320" width="35" height="15" fill="#4b5563" rx="2"/>
+    
+    <!-- Ceintures de sécurité -->
+    <line x1="90" y1="280" x2="130" y2="320" stroke="#dc2626" stroke-width="3"/>
+    <line x1="470" y1="280" x2="430" y2="320" stroke="#dc2626" stroke-width="3"/>
+  </g>
+  
+  <!-- Texte -->
+  <text x="400" y="520" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#6b7280">Intérieur du véhicule</text>
+  <text x="400" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#9ca3af">Image générique - Contactez-nous pour voir l'intérieur réel</text>
+</svg>

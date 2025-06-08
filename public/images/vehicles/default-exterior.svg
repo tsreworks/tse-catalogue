@@ -1,0 +1,40 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#f8fafc"/>
+  
+  <!-- Voiture vue de côté -->
+  <g transform="translate(100, 200)">
+    <!-- Carrosserie principale -->
+    <path d="M 50 150 L 150 150 L 180 120 L 450 120 L 480 130 L 550 130 L 580 150 L 600 150 L 600 180 L 580 200 L 550 200 L 520 180 L 130 180 L 100 200 L 50 200 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+    
+    <!-- Toit -->
+    <path d="M 180 120 L 220 80 L 420 80 L 450 120" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2"/>
+    
+    <!-- Fenêtres -->
+    <rect x="190" y="85" width="80" height="30" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1"/>
+    <rect x="280" y="85" width="80" height="30" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1"/>
+    <rect x="370" y="85" width="70" height="30" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1"/>
+    
+    <!-- Roues -->
+    <circle cx="150" cy="180" r="25" fill="#374151" stroke="#1f2937" stroke-width="3"/>
+    <circle cx="150" cy="180" r="15" fill="#6b7280"/>
+    <circle cx="500" cy="180" r="25" fill="#374151" stroke="#1f2937" stroke-width="3"/>
+    <circle cx="500" cy="180" r="15" fill="#6b7280"/>
+    
+    <!-- Phares -->
+    <ellipse cx="580" cy="140" rx="15" ry="10" fill="#fbbf24"/>
+    <ellipse cx="70" cy="140" rx="15" ry="10" fill="#ef4444"/>
+    
+    <!-- Portes -->
+    <line x1="270" y1="120" x2="270" y2="180" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="360" y1="120" x2="360" y2="180" stroke="#94a3b8" stroke-width="1"/>
+    
+    <!-- Poignées -->
+    <rect x="240" y="145" width="8" height="4" fill="#6b7280" rx="2"/>
+    <rect x="330" y="145" width="8" height="4" fill="#6b7280" rx="2"/>
+    <rect x="420" y="145" width="8" height="4" fill="#6b7280" rx="2"/>
+  </g>
+  
+  <!-- Texte -->
+  <text x="400" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#6b7280">Image du véhicule non disponible</text>
+  <text x="400" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#9ca3af">Photo générique - Contactez-nous pour plus d'images</text>
+</svg>

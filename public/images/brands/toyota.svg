@@ -1,0 +1,8 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" rx="20"/>
+  <circle cx="100" cy="80" r="25" fill="#eb0a1e"/>
+  <rect x="75" y="115" width="50" height="30" fill="#eb0a1e" rx="5"/>
+  <circle cx="85" cy="155" r="12" fill="#c41e3a"/>
+  <circle cx="115" cy="155" r="12" fill="#c41e3a"/>
+  <text x="100" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#eb0a1e">TOYOTA</text>
+</svg>
